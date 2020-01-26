@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 
 	tbb::task_group group;
 	tbb::task_arena arena(nthreads, 1);
-#if 0
+#if 1
 	// Uncomment this to get things even worse
 	tbb::global_control control(tbb::global_control::max_allowed_parallelism, nthreads);
 #else
@@ -59,12 +59,14 @@ int main(int argc, char* argv[])
 	tbb::task_scheduler_init init(nthreads);
 #endif
 
-	group.run( [&] {
-		tbb::parallel_for(tbb::blocked_range<int>(0, result.size()),
-			[&](const tbb::blocked_range<int>& range)
-		{
-			for (int i = range.begin(); i != range.end(); i++)
-				result[i] = sqrt((double)i);
+	arena.execute( [&] {
+		group.run( [&] {
+			tbb::parallel_for(tbb::blocked_range<int>(0, result.size()),
+				[&](const tbb::blocked_range<int>& range)
+			{
+				for (int i = range.begin(); i != range.end(); i++)
+					result[i] = sqrt((double)i);
+			});
 		});
 	});
 
