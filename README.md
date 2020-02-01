@@ -4,6 +4,16 @@ The problem of the well-known `task_scheduler_init`-based approach is that TBB i
 
 The `global_control` class introduced in recent update of TBB copes with this problem on higher level. The `max_allowed_parallelism` property is able to limit the thread spawning strictly to the specified number of threads.
 
+## Building
+
+```
+git clone --recurse https://github.com/dmikushin/python_tbb.git
+mkdir build
+cd build
+cmake ..
+make -j2
+```
+
 ## Testing
 
 ```
